@@ -99,7 +99,7 @@ public:
         pthread_cond_destroy(&m_cond);
     }
     //封装pthread_cond_wait，等待目标条件变量
-    //条件变量的使用机制需要配合互斥锁使用
+    //条件变量的使用机制需要配合互斥锁使用：其加锁解锁封装在了外部，因此无需在此处加解锁
     bool wait(pthread_mutex_t *m_mutex){
         int ret = 0;
         // pthread_mutex_lock(&m_mutex);
@@ -107,7 +107,7 @@ public:
         // pthread_mutex_unlock(&m_mutex);
         return ret == 0;
     }
-    //封装pthread_cond_timedwait，设置取消点函数，当目标线程推迟行动时，若调用此函数，则立即执行
+    //封装pthread_cond_timedwait，在超时时间t内等待目标条件变量
     bool timewait(pthread_mutex_t *m_mutex, struct timespec t){
         int ret = 0;
         //pthread_mutex_lock(&m_mutex);
