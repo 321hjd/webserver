@@ -276,7 +276,7 @@ http_conn::HTTP_CODE http_conn::parse_request_line(char *text){
         m_method = GET;
     }
     else if(strcasecmp(method, "POST") == 0){
-        m_method = POST:
+        m_method = POST;
         cgi = 1;
     }
     else{
@@ -491,7 +491,7 @@ http_conn::HTTP_CODE http_conn::do_request(){
             if(users.find(name) == users.end()){
                 m_lock.lock();
                 int res = mysql_query(mysql, sql_insert);
-                user.insert(pair<string, string>(name, password));
+                users.insert(pair<string, string>(name, password));
                 m_lock.unlock();
 
                 if(!res)
