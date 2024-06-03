@@ -9,7 +9,7 @@ sort_timer_lst::sort_timer_lst()
     tail = NULL;
 }
 //析构，负责销毁链表
-sort_timer_lst::~ort_timer_lst()
+sort_timer_lst::~sort_timer_lst()
 {
     head = NULL;
     tail = NULL;
@@ -31,7 +31,7 @@ void sort_timer_lst::add_timer(util_timer *timer)
     if (timer->expire < head->expire)
     {
         timer->next = head;
-        head-prev = timer;
+        head->prev = timer;
         head = timer;
         return;
     }

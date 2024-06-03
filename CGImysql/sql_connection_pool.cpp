@@ -24,7 +24,7 @@ connection_pool *connection_pool::GetInstance()
     return &connPool;
 }
 //构造初始化
-void connection_pool::init(string url, string User,  string PassWord, string DBName, int Port, int MaxConn, int close_log)
+void connection_pool::init(string url, string User, string PassWord, string DBName, int Port, int MaxConn, int close_log)
 {
 	m_url = url;
 	m_Port = Port;

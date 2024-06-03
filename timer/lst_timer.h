@@ -32,7 +32,7 @@ class util_timer;
 struct client_data
 {
     //客户端socket地址
-    sockaddr_in adress;
+    sockaddr_in address;
     //连接时所用的socket文件描述符
     int sockfd;
     //定时器
@@ -121,6 +121,6 @@ public:
     sort_timer_lst m_timer_lst;
     static int u_epollfd;    //统一事件源，用于监听信号事件的内核事件表文件描述符
     int m_TIMESLOT;
-}
+};
 
 #endif

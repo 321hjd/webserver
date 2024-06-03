@@ -99,7 +99,7 @@ template<typename T>
 bool threadpool<T>::append(T *request, int state){
     m_queuelocker.lock();   //加锁保护
     if(m_workqueue.size() >= m_max_requests){
-        m_workqueue.unlock();
+        m_queuelocker.unlock();
         return false;
     }
     //添加任务并设置状态

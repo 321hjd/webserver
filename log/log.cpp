@@ -20,7 +20,8 @@ Log::~Log()
 }
 
 //日志系统初始化，异步写入需要设置阻塞队列长度，同步写入不需要
-bool Log::init(const char *file_name, int close_log, int log_buf_size = 8192, int split_lines = 5000000, int max_queue_size = 0){
+bool Log::init(const char *file_name, int close_log, int log_buf_size, int split_lines, int max_queue_size)
+{
     //如果设置了max_queue_size，则说明是异步写入
     if(max_queue_size >= 1){
         m_is_async = true;
