@@ -10,7 +10,7 @@
 */
 
 
-//信号量
+//信号量 ---- 工作线程等待业务请求时使用到
 class sem{
 public:
     //默认/有参构造，封装sem_init，初始化信号量
@@ -83,7 +83,7 @@ private:
     pthread_mutex_t m_mutex;	//互斥锁对象
 };
 
-//条件变量
+//条件变量 ---- 阻塞队列中使用到
 class cond{
 public:
     //默认构造，封装pthread_cond_init，初始化条件变量

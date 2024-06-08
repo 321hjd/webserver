@@ -142,7 +142,7 @@ void WebServer::eventListen()
 
     //3.创建一个监听队列以存放待处理的客户连接
 
-    //m_listenfd指定被监听的socket，5表示内核监听队列的最大长度
+    //m_listenfd指定被监听的socket，5表示内核监听队列的最大长度(处于完全连接状态ESTABLISH的连接数量上限)
     //监听队列的长度超过5则服务器将不受理新的客户连接，客户端也将收到ECONNREFUSED错误信息
     ret = listen(m_listenfd, 5);
     assert(ret >= 0);
@@ -427,10 +427,10 @@ void WebServer::eventLoop()
                 if (false == flag)
                     continue;
             }
-            //处理超时事件
+            //处理：对端半关闭连接(CLOSE_WAIT)、连接断开、错误等事件
             else if (events[i].events & (EPOLLRDHUP | EPOLLHUP | EPOLLERR))
             {
-                //服务器端关闭连接，移除对应的定时器
+                //deal_timer()关闭连接，移除对应的定时器
                 util_timer *timer = users_timer[sockfd].timer;
                 deal_timer(timer, sockfd);
             }
@@ -455,6 +455,8 @@ void WebServer::eventLoop()
         //超时无连接，写入日志
         if (timeout)
         {
+			//调用信号处理函数，将信号值从管道写端u_pipefd[1]写入
+			//下一次循环epoll_wait将检测到该超时事件并处理
             utils.timer_handler();
 
             LOG_INFO("%s", "timer tick");

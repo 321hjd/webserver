@@ -175,6 +175,7 @@ bool http_conn::read_once()
     if (0 == m_TRIGMode)
     {
         //系统调用recv从通信socket中读取数据，返回读取的字节数
+		//arg2：缓冲区位置；arg3：缓冲区大小
         bytes_read = recv(m_sockfd, m_read_buf + m_read_idx, READ_BUFFER_SIZE - m_read_idx, 0);
         m_read_idx += bytes_read;
         //读取失败
@@ -445,6 +446,7 @@ http_conn::HTTP_CODE http_conn::process_read()
                 return INTERNAL_ERROR;
         }
     }
+	//只有LT模式下会出现NO_REQUEST情况，如果是ET模式，会一次性读完，不会等到下一次竞争到资源再处理
     return NO_REQUEST;
 }
 
@@ -591,7 +593,7 @@ http_conn::HTTP_CODE http_conn::do_request()
     //表示请求文件存在，且可以访问
     return FILE_REQUEST;
 }
-//响应报文写入函数，写线程从请求队列中取出m_write_buf，并写入通信socket
+//释放映射文件的内存空间
 void http_conn::unmap()
 {
     if (m_file_address)
